@@ -4,10 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-torch = "*"
 torchvision = "*"
 torchaudio = "*"
-smplx = "*"
 einops = "*"
 moviepy = "*"
 omegaconf = "*"
@@ -20,6 +18,10 @@ python-dotenv = "*"
 hydra-colorlog = "*"
 rich = "*"
 wandb = "*"
+torch = "*"
+pip = "*"
+smplx = {extras = ["all"], version = "*"}
+tensorboard = "*"
 
 [dev-packages]
 
