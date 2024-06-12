@@ -37,7 +37,7 @@ trainer:
 
 datamodule:
   _target_         : src.datamodules.aist_datamodule.AISTPPDataModule
-  data_path        : ${data_dir}/AIST++
+  data_path        : ${data_dir}AIST++
   music_length     : ${model.gen_params.music_length}
   seed_m_length    : ${model.gen_params.seed_m_length}
   predict_length   : ${model.gen_params.predict_length}
