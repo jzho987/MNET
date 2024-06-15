@@ -30,8 +30,8 @@ trainer:
   accumulate_grad_batches   : 1
   check_val_every_n_epoch   : 1000
 
-  weights_summary           : "top"
-  progress_bar_refresh_rate : 10
+  # weights_summary           : "top"
+  # progress_bar_refresh_rate : 10
 
   fast_dev_run              : False
 

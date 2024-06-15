@@ -57,4 +57,4 @@ seed: null
 name: "default"
 
 trainer:
-  gpus: 1
+  # gpus: 1
