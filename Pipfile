@@ -22,11 +22,13 @@ torch = "*"
 pip = "*"
 smplx = {extras = ["all"], version = "*"}
 tensorboard = "*"
+chumpy = "*"
+numpy = "==1.23.1"
 
 [dev-packages]
 
 [requires]
-python_version = "3.12"
+python_version = "3.9"
 
 [pipenv]
 allow_prereleases = true
