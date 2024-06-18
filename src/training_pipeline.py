@@ -33,9 +33,10 @@ def train(config: DictConfig) -> Optional[float]:
         seed_everything(config.seed, workers=True)
 
     # Convert relative ckpt path to absolute path if necessary
-    ckpt_path = config.trainer.get("resume_from_checkpoint")
+    ckpt_path = config.get("resume_from_checkpoint")
     if ckpt_path and not os.path.isabs(ckpt_path):
-        config.trainer.resume_from_checkpoint = os.path.join(
+        log.info(f"Resuming from checkpoint: <{ckpt_path}>")
+        config.resume_from_checkpoint = os.path.join(
             hydra.utils.get_original_cwd(), ckpt_path
         )
 

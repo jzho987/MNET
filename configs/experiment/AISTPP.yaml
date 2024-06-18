@@ -17,18 +17,19 @@ defaults:
 name: "MNET"
 
 seed: 12345
+resume_from_checkpoint: "./logs/2024-06-18_11-32-55/checkpoints/last.ckpt"
 
 trainer:
   _target_                  : pytorch_lightning.Trainer
   # gpus                      : 0
-  min_epochs                : 1
-  max_epochs                : 6000
+  min_epochs                : 600
+  max_epochs                : 1000
   accelerator               : "auto"
   # auto_lr_find              : False
 
   gradient_clip_val         : 0
   accumulate_grad_batches   : 1
-  check_val_every_n_epoch   : 1000
+  check_val_every_n_epoch   : 100
 
   # weights_summary           : "top"
   # progress_bar_refresh_rate : 10
@@ -96,7 +97,7 @@ callbacks:
     filename            : null
     save_last           : True
     save_top_k          : -1
-    every_n_train_steps : 10000
+    every_n_train_steps : 3000
 
   dance_generation:
     _target_      : src.callbacks.dance_generation.DanceGeneration

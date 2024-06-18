@@ -9,4 +9,4 @@ max_epochs: 10
 # num_sanity_val_steps: 0
 
 # ckpt path
-resume_from_checkpoint: null
+resume_from_checkpoint: "logs/2024-06-17_16-20-58/checkpoints/epoch=197-step=34000.ckpt"
