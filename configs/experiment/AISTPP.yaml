@@ -22,14 +22,14 @@ resume_from_checkpoint: "./logs/2024-06-18_11-32-55/checkpoints/last.ckpt"
 trainer:
   _target_                  : pytorch_lightning.Trainer
   # gpus                      : 0
-  min_epochs                : 600
+  min_epochs                : 1
   max_epochs                : 1000
   accelerator               : "auto"
   # auto_lr_find              : False
 
   gradient_clip_val         : 0
   accumulate_grad_batches   : 1
-  check_val_every_n_epoch   : 100
+  check_val_every_n_epoch   : 1
 
   # weights_summary           : "top"
   # progress_bar_refresh_rate : 10
@@ -43,7 +43,7 @@ datamodule:
   seed_m_length    : ${model.gen_params.seed_m_length}
   predict_length   : ${model.gen_params.predict_length}
   train_test_split : [ 1368, 40 ]
-  batch_size       : 16
+  batch_size       : 4
   num_workers      : 16
   pin_memory       : True
 

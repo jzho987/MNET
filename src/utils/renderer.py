@@ -13,7 +13,7 @@ from pyrender.constants import RenderFlags
 
 
 
-os.environ['PYOPENGL_PLATFORM'] = 'egl'
+# os.environ['PYOPENGL_PLATFORM'] = 'egl'
 
 
 class WeakPerspectiveCamera(pyrender.Camera):
