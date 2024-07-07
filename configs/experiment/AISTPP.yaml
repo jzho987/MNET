@@ -17,19 +17,19 @@ defaults:
 name: "MNET"
 
 seed: 12345
-resume_from_checkpoint: "./logs/2024-06-18_11-32-55/checkpoints/last.ckpt"
+resume_from_checkpoint: "./logs/2024-07-07_14-25-14/checkpoints/last.ckpt"
 
 trainer:
   _target_                  : pytorch_lightning.Trainer
   # gpus                      : 0
-  min_epochs                : 1
+  min_epochs                : 3
   max_epochs                : 1000
   accelerator               : "auto"
   # auto_lr_find              : False
 
   gradient_clip_val         : 0
   accumulate_grad_batches   : 1
-  check_val_every_n_epoch   : 1
+  check_val_every_n_epoch   : 3
 
   # weights_summary           : "top"
   # progress_bar_refresh_rate : 10
