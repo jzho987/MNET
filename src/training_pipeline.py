@@ -11,6 +11,7 @@ from pytorch_lightning import (
     seed_everything,
 )
 from pytorch_lightning.loggers import Logger
+import torch
 
 from src import utils
 
@@ -29,6 +30,7 @@ def train(config: DictConfig) -> Optional[float]:
     """
 
     # Set seed for random number generators in pytorch, numpy and python.random
+    torch.set_float32_matmul_precision('medium')
     if config.get("seed"):
         seed_everything(config.seed, workers=True)
 

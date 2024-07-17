@@ -17,13 +17,14 @@ defaults:
 name: "MNET"
 
 seed: 12345
-resume_from_checkpoint: "./logs/2024-06-18_11-32-55/checkpoints/last.ckpt"
+# resume_from_checkpoint: "./checkpoints/last.ckpt"
+resume_from_checkpoint: "./logs/2024-07-16_10-39-30/checkpoints/epoch=182-step=50000.ckpt"
 
 trainer:
   _target_                  : pytorch_lightning.Trainer
   # gpus                      : 0
-  min_epochs                : 600
-  max_epochs                : 1000
+  min_epochs                : 1000
+  max_epochs                : 6000
   accelerator               : "auto"
   # auto_lr_find              : False
 
@@ -43,8 +44,8 @@ datamodule:
   seed_m_length    : ${model.gen_params.seed_m_length}
   predict_length   : ${model.gen_params.predict_length}
   train_test_split : [ 1368, 40 ]
-  batch_size       : 16
-  num_workers      : 16
+  batch_size       : 10
+  num_workers      : 10
   pin_memory       : True
 
 model:
@@ -52,18 +53,18 @@ model:
 
   gen_params:
     dim           : 768
-    depth         : 8
-    heads         : 12
+    depth         : 12
+    heads         : 8
     mlp_dim       : 2048
     music_length  : 120
     seed_m_length : 60
-    predict_length: 30
+    predict_length: 20
     rot_6d        : True
 
   dis_params:
     dim     : 768
-    depth   : 4
-    heads   : 12
+    depth   : 8
+    heads   : 8
     mlp_dim : 2048
     rot_6d  : ${model.gen_params.rot_6d}
 
@@ -97,7 +98,7 @@ callbacks:
     filename            : null
     save_last           : True
     save_top_k          : -1
-    every_n_train_steps : 3000
+    every_n_train_steps : 30000
 
   dance_generation:
     _target_      : src.callbacks.dance_generation.DanceGeneration

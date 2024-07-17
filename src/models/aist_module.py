@@ -78,7 +78,11 @@ class AISTLitModule(LightningModule):
                         'gen': self.gen}
         if self.dis:
             loss_op_dict.update({'dis': self.dis})
-        return self.compute_loss(**loss_op_dict)
+        loss = self.compute_loss(**loss_op_dict)
+        seperated_loss, dict = loss
+        with open("generator_log.txt", "a") as f:
+            f.write(f"{seperated_loss.item()}\n")
+        return loss
 
     def dis_step(self, batch, state):
         dance_s, dance_f, music, dance_id = batch
@@ -89,7 +93,11 @@ class AISTLitModule(LightningModule):
                         'dance_id': dance_id,
                         'gen': self.gen,
                         'dis': self.dis}
-        return self.compute_loss(**loss_op_dict)
+        loss = self.compute_loss(**loss_op_dict)
+        seperated_loss, dict = loss
+        with open("discriminator_log.txt", "a") as f:
+            f.write(f"{seperated_loss.item()}\n")
+        return loss
 
     def configure_optimizers(self):
         optimizer = self.hparams.optimizer
