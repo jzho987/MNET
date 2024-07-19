@@ -105,7 +105,8 @@ class ComputeLoss(nn.Module):
         device = music.device
 
         noise = torch.randn(b, 256).to(device)
-        dance_g = kwargs['gen'](music, dance_s, noise, dance_id)
+        generator = kwargs['gen'] 
+        dance_g = generator(music, dance_s, noise, dance_id)
 
         if kwargs['gen'].rot_6d:
             pose, trans = dance_f[:, :, :-3], dance_f[:, :, -3:]
@@ -115,19 +116,21 @@ class ComputeLoss(nn.Module):
             dance_f = torch.cat([pose, trans], dim=2)
 
         loss, log_dict = 0.0, {}
-        for key, value in self.dis_loss_dict.items():
-            if key == 'l_adv_loss':
-                r_logit = kwargs['dis'](music, dance_f, dance_id)
-                f_logit = kwargs['dis'](music, dance_g.detach(), dance_id)
+        loss_key = 'l_adv_loss'
+        if loss_key in self.dis_loss_dict:
+            value = self.dis_loss_dict[loss_key]
 
-                l_dis_real = self.adv_loss(r_logit, True, True)
-                l_dis_fake = self.adv_loss(f_logit, False, True)
+            r_logit = kwargs['dis'](music, dance_f, dance_id)
+            f_logit = kwargs['dis'](music, dance_g.detach(), dance_id)
 
-                l_adv_loss = ((l_dis_real + l_dis_fake) / 2)
-                loss += (l_adv_loss * value)
+            l_dis_real = self.adv_loss(r_logit, True, True)
+            l_dis_fake = self.adv_loss(f_logit, False, True)
 
-                log_dict.update({f'{state}/l_real_loss': l_dis_real})
-                log_dict.update({f'{state}/l_fake_loss': l_dis_fake})
+            l_adv_loss = ((l_dis_real + l_dis_fake) / 2)
+            loss += (l_adv_loss * value)
+
+            log_dict.update({f'{state}/l_real_loss': l_dis_real})
+            log_dict.update({f'{state}/l_fake_loss': l_dis_fake})
 
         log_dict.update({f'{state}/loss': loss})
         return loss, log_dict
