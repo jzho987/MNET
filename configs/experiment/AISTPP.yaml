@@ -86,10 +86,10 @@ model:
       weight_decay : 0
 
   scheduler:
-    type: MultiStepLR
-    kwargs:
-      milestones : [400, 1000]
-      gamma      : 0.1
+  #   type: MultiStepLR
+  #   kwargs:
+  #     milestones : [400, 1000]
+  #     gamma      : 0.1
 
 callbacks:
   model_checkpoint:

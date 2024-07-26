@@ -123,7 +123,7 @@ def main(args):
     model = load_model(args.log_path, args.ckpt)
     audio, seed_motion, genre, audio_path = load_data(args.pkl_data, args.second, model.seed_m_length)
 
-    smpl = SMPL(model_path='./data/SMPL_DIR', gender='MALE', batch_size=1).eval()
+    smpl = SMPL(model_path='./data/AIST++/SMPL_DIR', gender='MALE', batch_size=1).eval()
 
     save_path = os.path.join('./logs/', args.log_path, 'demos', args.type)
     os.makedirs(save_path, exist_ok=True)
@@ -158,7 +158,7 @@ if __name__ == '__main__':
 
     args.add_argument('-c', '--ckpt', type=str, default='last.ckpt')
     args.add_argument('-t', '--type', type=str, default='diversity')
-    args.add_argument('-d', '--device', type=str, default='cuda:2')
+    args.add_argument('-d', '--device', type=str, default='cuda')
     args.add_argument('-s', '--second', type=int, default=10)
     args = args.parse_args()
 

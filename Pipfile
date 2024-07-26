@@ -20,8 +20,10 @@ smplx = "*"
 numpy = "*"
 tensorboard = "*"
 pip = "*"
-imageio = "*"
 pyrender = "*"
+chumpy = "*"
+imageio = {extras = ["pyav"], version = "*"}
+moviepy = "*"
 
 [dev-packages]
 
