@@ -14,6 +14,7 @@ from pytorch_lightning.loggers import Logger
 import torch
 
 from src import utils
+from src.models.aist_module import AISTLitModule
 
 log = utils.get_logger(__name__)
 
@@ -29,15 +30,16 @@ def train(config: DictConfig) -> Optional[float]:
         Optional[float]: Metric score for hyperparameter optimization.
     """
 
-    # Set seed for random number generators in pytorch, numpy and python.random
+    # enable tensor core
     torch.set_float32_matmul_precision('medium')
+
+    # Set seed for random number generators in pytorch, numpy and python.random
     if config.get("seed"):
         seed_everything(config.seed, workers=True)
 
     # Convert relative ckpt path to absolute path if necessary
     ckpt_path = config.get("resume_from_checkpoint")
     if ckpt_path and not os.path.isabs(ckpt_path):
-        log.info(f"Resuming from checkpoint: <{ckpt_path}>")
         config.resume_from_checkpoint = os.path.join(
             hydra.utils.get_original_cwd(), ckpt_path
         )
@@ -48,7 +50,13 @@ def train(config: DictConfig) -> Optional[float]:
 
     # Init lightning model
     log.info(f"Instantiating model <{config.model._target_}>")
-    model: LightningModule = hydra.utils.instantiate(config.model)
+    ckpt_path = config.get("resume_from_checkpoint")
+    if ckpt_path is not None:
+        log.info(f"Found checkpoint: Resuming from checkpoint: <{ckpt_path}>")
+        model: LightningModule = AISTLitModule.load_from_checkpoint(ckpt_path)
+    else:
+        log.info(f"Not found checkpoint: Instantiating new model")
+        model: LightningModule = hydra.utils.instantiate(config.model)
 
     # Init lightning callbacks
     callbacks: List[Callback] = []

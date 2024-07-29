@@ -17,16 +17,14 @@ defaults:
 name: "MNET"
 
 seed: 12345
-# resume_from_checkpoint: "./checkpoints/last.ckpt"
-resume_from_checkpoint: "./logs/2024-07-16_10-39-30/checkpoints/epoch=182-step=50000.ckpt"
+resume_from_checkpoint: "checkpoints/epoch=1861-step=510000.ckpt"
 
 trainer:
   _target_                  : pytorch_lightning.Trainer
-  # gpus                      : 0
+  # precision                 : 16
   min_epochs                : 1000
-  max_epochs                : 6000
+  max_epochs                : 2000
   accelerator               : "auto"
-  # auto_lr_find              : False
 
   gradient_clip_val         : 0
   accumulate_grad_batches   : 1
@@ -52,7 +50,7 @@ model:
   _target_  : src.models.aist_module.AISTLitModule
 
   gen_params:
-    dim           : 768
+    dim           : 512
     depth         : 12
     heads         : 8
     mlp_dim       : 2048
@@ -62,7 +60,7 @@ model:
     rot_6d        : True
 
   dis_params:
-    dim     : 768
+    dim     : 512
     depth   : 8
     heads   : 8
     mlp_dim : 2048
