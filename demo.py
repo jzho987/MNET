@@ -30,7 +30,7 @@ Genres = {
 
 
 def load_model(log_path, ckpt):
-    path = os.path.join('./logs', log_path)
+    path = log_path
     with open(os.path.join(path, '.hydra/config.yaml')) as f:
         config = yaml.load(f, Loader=yaml.FullLoader)
 
@@ -39,6 +39,7 @@ def load_model(log_path, ckpt):
     for key, value in ckpt['state_dict'].items():
         key = key.split('.')
         if key[0] == 'gen':
+            print('.'.join(key[1:]))
             state_dict.update({'.'.join(key[1:]): value})
 
     model = DanceGenerator(**config['model']['gen_params'])
@@ -52,6 +53,7 @@ def load_data(pkl_data, second, seed_m_length):
     pkl_data_path = os.path.join('./data/AIST++/motions', pkl_data)
 
     pose, trans = pkl_processing(pkl_data_path)
+    print(pose.shape, trans.shape)
     motion = torch.cat([pose, trans], dim=1)
 
     audio_name = pkl_data.split('.')[0].split('_')[4]
@@ -118,7 +120,7 @@ def video_with_music(save_video, audio_path):
 
 
 def main(args):
-    device = torch.device(args.device if torch.cuda.is_available() else "cpu")
+    device = torch.device(args.device if torch.cuda.is_available() else "mps")
 
     model = load_model(args.log_path, args.ckpt)
     audio, seed_motion, genre, audio_path = load_data(args.pkl_data, args.second, model.seed_m_length)
@@ -148,6 +150,7 @@ def main(args):
 
     with torch.no_grad():
         output_motion = model.inference(audio, seed_motion, noise, genre)
+        print(output_motion)
         render_video(output_motion, smpl, save_path, audio_path)
 
 
